@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+ <head>
+   <meta charset="UTF-8">
+  <title></title>
+<script>
+
+function GetCookie (name) {
+	var str = name+"=";
+	var pairs = document.cookie.split(";"); // 쿠키문자열을 ;을 경계로 분할
+	for(var i=0; i<pairs.length; i++) {
+		var pair = pairs[i].trim(); // 쿠키 앞뒤의 빈칸 제거
+		var unit = pair.split("=");
+		if(unit[0] == name)
+			return unescape(unit[1]);
+	}
+	return null;
+}
+
+function SetCookie (name, value, expireDate) {
+	var cookieStr = name + "=" + escape(value) + 
+((expireDate == null)?"":("; expires=" + expireDate.toGMTString()));
+document.cookie = cookieStr;
+}
+
+var username = GetCookie("username");
+var count_cookie = GetCookie("count_cookie");
+
+var arr = new Array(16);
+var arr=['짜장면', '짬뽕', '콜라', '사이다', '양념치킨', '후라이드치킨', '보쌈', '족발', '탕수육', '깐풍기', '간장게장', '양념게장', '비빔냉면', '물냉면', '떡볶이', '순대'];
+var k=0;
+var num=0;
+var count=0;
+function findChecked() {
+	var found = null;
+	var kcity = document.getElementsByName("food");
+	for(var i=0; i<kcity.length; i++) {
+		if(kcity[i].checked == true) 
+			found = kcity[i];
+	}
+	if(found != null) {
+		alert(found.value + "이 선택되었음");
+		arr[k]=found.value;
+		k++;	
+		changeimage();
+		
+		}
+	else 
+		alert("선택된 것이 없음")
+}
+
+function printarr(){
+	for(var i=0; i < 16; i++)
+	document.write("<br>"+"arr["+i+"]="+arr[i]);
+	document.write("<br>num="+num);
+	document.write("<br>k="+k);
+	}
+
+function countcheck(){
+		if(count==0 && num==14){
+			num=0;
+			k=0;
+			count++;
+		}else if(count==1 && num==8){
+			num=0;
+			k=0;
+			count++;
+		}else if(count==2 && num==4){
+			num=0;
+			k=0;
+			count++;
+		}else if(count==3 && num==2){
+			num=0;
+			k=0;
+			count++;
+		}
+	}
+
+function changeimage() {
+	countcheck();
+	if(count==0){
+		num=num+2;
+		printmenu(num);
+	}else if(count==1){
+		printmenu(num);
+		num=num+2;
+	}else if(count==2){
+		printmenu(num);
+		num=num+2;
+	}else if(count==3){
+		printmenu(num);
+		num=num+2;
+	}else{
+		document.open();
+		document.write(username+"님의 "+count_cookie+"번째 선택은 "+arr[0]+"였습니다");
+	}
+}
+
+
+function printmenu(num){
+	document.open();
+	document.write("<h2>먹고 싶은 것 하나만 선택!</h2><hr>");
+	switch(count){
+	case 0:
+	document.write("<h2>16강</h2><hr>");
+	break;
+	case 1:
+	document.write("<h2>8강</h2><hr>");
+	break;
+	case 2:
+	document.write("<h2>4강</h2><hr>");
+	break;
+	case 3:
+	document.write("<h2>결승</h2><hr>");
+	break;
+		}
+	document.write('<img src="food_images/'+arr[num]+'.jpg" id="first" height="200" width="200">');
+	document.write('<h3><input type="radio" name="food" value="'+arr[num]+'">'+arr[num]+'</h3><br>');
+
+	document.write('<img src="food_images/'+arr[num+1]+'.jpg" id="second" height="200" width="200">');
+	document.write('<h3><input type="radio" name="food" value="'+arr[num+1]+'">'+arr[num+1]+'</h3><br>');
+
+	printbutton();
+	//printarr();
+	}
+
+function printbutton(){
+	document.write('<input type="button" value="선택" style="font-size:20px" onclick="findChecked()"><br>');
+}
+
+
+</script>
+
+
+ </head>
+ <body>
+
+ 
+<script>
+var username = GetCookie("username");
+var count_cookie = GetCookie("count_cookie");
+var expire = new Date (); // 현재 시간
+if (username == null) {
+	count_cookie = 0;
+	username = prompt("이름을 입력해주세요","");
+	if (username == null) {
+		alert("이름을 입력하시면 보다 나은 서비스를 받을 수 있습니다.");
+		username = "아무개";
+	} else {
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000)); // 1년후 
+		SetCookie("username",username,expire);
+	}
+}
+count_cookie++;
+expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000)); // 1년후 
+SetCookie("count_cookie",count_cookie,expire);
+
+alert('어서오세요. '+username+'님의 '+count_cookie+'번째 방문을 환영합니다!');
+
+
+
+	printmenu(num);
+</script>	
+
+
+
+
+<script>
+	//printarr();
+</script>
+
+ </body>
+</html>
